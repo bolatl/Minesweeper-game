@@ -3,11 +3,11 @@
 using namespace std;
 
 
-int table[11][11]; // игровое поле
-int open[11][11]; // открытые клетки
+int table[11][11]; // Game table
+int open[11][11]; // Opened cells
 size_t r[] = {-1, -1, -1, 0, 0, 1, 1, 1};
 size_t c[] = {-1, 0, 1, -1, 1, -1, 0, 1};
-int opened; // количество открытых клеток
+int opened; // Number of opened cells
 
 void Random() 
 {
@@ -18,7 +18,7 @@ void Random()
 
 void fill() 
 {
-	for(int i = 0; i < 11; i++) // Заполняем границы -1
+	for(int i = 0; i < 11; i++) // Borders are filled with -1
 	{
 		table[0][i] = -1;
 		table[i][0] = -1;
@@ -34,9 +34,9 @@ void fill()
 		y = rand() % 9 + 1;
 		if(table[x][y] != 9 && open[x][y] != 1) 
 		{
-			table[x][y] = 9; // 9 будет обозначать мину потому что максимум для соседей 8
+			table[x][y] = 9; // 9 is a mine since max for neighbors is 8
 			num_mines++;
-			for(int i = 0; i < 8; i++) // Соседи увеличиваются на 1 потому что рядом мина
+			for(int i = 0; i < 8; i++) 
 				if(table[x + r[i]][y + c[i]] != 9 && table[x + r[i]][y + c[i]] != -1) table[x + r[i]][y + c[i]]++;	
 		}
  	}
@@ -44,7 +44,7 @@ void fill()
 
 void print() 
 {
-	cout << "Количество бомб 10 " << endl;
+	cout << "Number of bombs: 10 " << endl;
 	for(int i = 0; i < 11; i++) 
 	{
 		for(int j = 0; j < 11; j++) 
@@ -77,7 +77,7 @@ bool again()
 	char ch;
 	while(1) 
 	{
-		cout << "Хотите сыграть еще [Y/N]: ";
+		cout << "Do you want to play again? [Y/N]: ";
 		cin >> ch;
 		if(ch == 'Y') 
 		{	
@@ -91,7 +91,7 @@ bool again()
 			return true;
 		}
 		else if(ch == 'N') return false;
-		else cout << "Неправильный ввод, попробуйте еще раз\n";
+		else cout << "Invalid input, try again: \n";
 	}
 }
 void end() 
@@ -110,11 +110,11 @@ void play ()
 	bool ok = false;
 	while(1) 
 	{
-		cout << "Введите строку и столбец через пробел: ";
+		cout << "Enter row and column by space:  ";
 		cin >> row >> column;
 		if(row > 9 || row < 1 || column > 9 || column < 1) 
 		{
-			cout << "Неправильный ввод\n";
+			cout << "Invalid input: \n";
 			continue;
 		} else
 		{
@@ -130,7 +130,7 @@ void play ()
 	{
 		if(ok) 
 		{
-			cout << "Введите строку и столбец для отметки через пробел[-1 чтобы отменить отметку]: ";
+			cout << "Enter row and column by space[-1 to unmark]: ";
 			cin >> row;
 			if(row == -1) 
 			{
@@ -140,11 +140,11 @@ void play ()
 			cin >> column;
 			if(row > 9 || row < 1 || column > 9 || column < 1) 
 			{
-				cout << "Неправильный ввод\n";
+				cout << "Invalid input\n";
 				continue;
 			} else if (open [row][column] == 1) 
 			{
-				cout << "Клетка уже открыта, попробуйте открыть другую" << endl;
+				cout << "The cell is already open try another" << endl;
 				continue;	
 			} else if(open[row][column] == 2) 
 			{
@@ -158,7 +158,7 @@ void play ()
 			print();
 			continue;  
 		}
-		cout << "Введите строку и столбец через пробел [введите -1 чтобы отметить клетку или убрать отметку]: ";
+		cout << "Enter row and column by space[-1 to mark or unmark]: ";
 		cin >> row; 
 		if(row == -1) 
 		{
@@ -168,23 +168,23 @@ void play ()
 		cin >> column;
 		if(row > 9 || row < 1 || column > 9 || column < 1) 
 		{
-			cout << "Неправильный ввод\n";
+			cout << "Invalid input\n";
 			continue;
 		} else if (open [row][column] == 1) 
 		{
-			cout << "Клетка уже открыта, попробуйте открыть другую" << endl;
+			cout << "The cell is already open try another" << endl;
 			continue;	
 		}   
 		if(table[row][column] == 9) 
 		{
-			cout << "Вы проиграли(\n";
+			cout << "You lost(\n";
 			end();
 			print();
 			if(again()) play();
         	else return;
 		} else if (opened == 71) 
 		{
-			cout << "Вы выиграли)\n";
+			cout << "Ypu won)\n";
 			end();
 			print();
 			if(again()) play();
